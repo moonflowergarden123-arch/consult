@@ -155,8 +155,8 @@ body{margin:0}
       <p>2028학년도 대입 첫 적용 학년 맞춤 상담</p>
     </div>
     <div class="actions">
-      <span class="who" id="whoami">학생 화면</span>
-      <button class="btn-ghost" id="btnTeacher" type="button">선생님 화면</button>
+      <span class="who" id="whoami"></span>
+      <button class="btn-ghost" id="btnTeacher" type="button" hidden>선생님 화면</button>
       <button class="btn-ghost" id="btnStudentView" type="button" hidden>학생 화면으로</button>
     </div>
   </div>
@@ -486,6 +486,7 @@ function busy(on){$('#loading').hidden=!on}
 function copyOut(title,text){const fb=()=>{$('#copyTitle').textContent=title;$('#copyText').value=text;$('#copyModal').hidden=false;$('#copyText').select()};
   try{navigator.clipboard.writeText(text).then(()=>toast(title+' 복사됨'),fb)}catch(e){fb()}}
 $('#copyClose').onclick=()=>$('#copyModal').hidden=true;
+const IS_T=location.hash==='#teacher';
 const API_URL='https://script.google.com/macros/s/AKfycbzUssKxVJfm6evlHRqHaVVdwFsDWchYfuQsoAtCU6uKs8DdadcaSSRdZZNQmJY_F0uqjg/exec';
 function gsr(fn,args){return new Promise((res,rej)=>{if(!(window.google&&google.script&&google.script.run)){rej(new Error('연결할 수 없습니다.'));return}
   google.script.run.withSuccessHandler(res).withFailureHandler(e=>rej(e instanceof Error?e:new Error(String(e))))[fn](...args)})}
@@ -531,7 +532,7 @@ const DRAFT='g2-solo-draft';
 
 function studentMode(){
   tPw=null;document.body.className='student-mode';
-  $('#whoami').textContent='학생 화면';$('#btnTeacher').hidden=false;$('#btnStudentView').hidden=true;
+  $('#whoami').textContent='';$('#btnTeacher').hidden=!IS_T;$('#btnStudentView').hidden=true;
   $('#tBar').hidden=true;$('#sBar').hidden=false;$('#tabs').hidden=true;$('#legend').hidden=true;$('#stuNav').hidden=false;
 }
 function stuTab(t){const f=t==='form';$('#snForm').setAttribute('aria-selected',f);$('#snResult').setAttribute('aria-selected',!f);
@@ -554,7 +555,7 @@ $('#btnSubmit').onclick=async()=>{
   busy(true);
   try{const r=await run('studentSave',collect(true));
     if(!r.ok){toast(r.msg||'저장하지 못했습니다.');return}
-    $('#sStatus').textContent='마지막 저장 '+r.savedAt;toast('저장했습니다. 다시 열어도 그대로 남아 있어요.');dirty=false;
+    $('#sStatus').textContent='마지막 저장 '+r.savedAt;toast('저장했습니다. 선생님께 바로 전달됩니다.');dirty=false;
     try{localStorage.removeItem(DRAFT)}catch(e){}
   }catch(err){toast('저장하지 못했습니다. 인터넷 연결을 확인하고 다시 눌러주세요.')}
   finally{busy(false)}
@@ -602,7 +603,7 @@ $('#btnReport').onclick=()=>{const R=buildResult(),L=[];
 document.addEventListener('input',()=>{render();dirty=true;leaveWarned=false;if(!tPw){try{const o=collect(true);o._at=new Date().toISOString().slice(0,16).replace('T',' ');localStorage.setItem(DRAFT,JSON.stringify(o))}catch(e){}}});
 document.addEventListener('change',()=>{render();dirty=true});
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-resetForm();render();show(1);loadStudentView(true);
+resetForm();render();show(1);loadStudentView(true).then(()=>{if(IS_T)$('#btnTeacher').click()});
 
 </script>
 </body>
