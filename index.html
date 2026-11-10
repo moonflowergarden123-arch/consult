@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<style>[hidden]{display:none!important}</style>
+<title>고2 수시 상담 프로그램</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 네이비 상단 바 + 10단계 탭(진단·분석·전략·마무리 4색) + 흰 카드형 작업면 */
+:root{
+  --bg:#f4f6fb; --surface:#ffffff; --ink:#141b34; --muted:#5b6380; --line:#dfe3ee;
+  --navy:#16204a; --navy-2:#24306a; --on-navy:#ffffff;
+  --c1:#4f46e5; --c1-soft:#eceafd;   /* 진단 01-03 */
+  --c2:#0f7c80; --c2-soft:#e2f3f2;   /* 분석 04-06 */
+  --c3:#c2410c; --c3-soft:#fdeee5;   /* 전략 07-09 */
+  --c4:#16204a; --c4-soft:#e6e9f4;   /* 마무리 10 */
+  --good:#15803d; --warn:#b45309; --bad:#b91c1c;
+  --font:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1226; --surface:#151b36; --ink:#e8ebf7; --muted:#9aa2c2; --line:#2a3358;
+  --navy:#0a0f24; --navy-2:#1c2654; --on-navy:#ffffff;
+  --c1:#8b85ff; --c1-soft:#24224f; --c2:#3cc2c4; --c2-soft:#123638;
+  --c3:#ff8a52; --c3-soft:#3d2216; --c4:#a9b4e8; --c4-soft:#222a52;
+  --good:#4ade80; --warn:#fbbf24; --bad:#f87171; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1226; --surface:#151b36; --ink:#e8ebf7; --muted:#9aa2c2; --line:#2a3358;
+  --navy:#0a0f24; --navy-2:#1c2654; --on-navy:#ffffff;
+  --c1:#8b85ff; --c1-soft:#24224f; --c2:#3cc2c4; --c2-soft:#123638;
+  --c3:#ff8a52; --c3-soft:#3d2216; --c4:#a9b4e8; --c4-soft:#222a52;
+  --good:#4ade80; --warn:#fbbf24; --bad:#f87171; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.6}
+header.top{background:var(--navy);color:var(--on-navy);padding-block:18px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1180px;margin:0 auto}
+.top .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.brand small{display:block;font-size:12px;opacity:.75;letter-spacing:.04em}
+.brand h1{margin:2px 0 0;font-size:22px;font-weight:900;letter-spacing:-.01em}
+.brand p{margin:2px 0 0;font-size:12.5px;opacity:.8}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+button{font-family:inherit;font-size:13.5px;font-weight:700;border-radius:10px;padding:9px 14px;cursor:pointer;border:1px solid transparent}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--c1);outline-offset:2px}
+.btn-ghost{background:transparent;color:var(--on-navy);border-color:rgba(255,255,255,.45)}
+.btn-solid{background:var(--c1);color:#fff}
+.btn-light{background:var(--surface);color:var(--ink);border-color:var(--line)}
+main{padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+nav.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:8px}
+@media (max-width:760px){nav.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tab{background:transparent;color:var(--ink);border:0;border-radius:10px;padding:9px 8px;text-align:left;font-weight:500;font-size:13px;display:flex;gap:8px;align-items:center;min-width:0}
+.tab b{font-size:12px;font-variant-numeric:tabular-nums;color:var(--g);min-width:20px}
+.tab span{min-width:0}
+.tab:hover{background:var(--gs)}
+.tab[aria-selected="true"]{background:var(--g);color:#fff}
+.tab[aria-selected="true"] b{color:#fff}
+.g1{--g:var(--c1);--gs:var(--c1-soft)} .g2{--g:var(--c2);--gs:var(--c2-soft)} .g3{--g:var(--c3);--gs:var(--c3-soft)} .g4{--g:var(--c4);--gs:var(--c4-soft)}
+:root[data-theme="dark"] .g4 .tab[aria-selected="true"], .g4[aria-selected="true"]{color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 4px 0;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.mode-banner{margin-top:14px;background:var(--c1-soft);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+section.panel{margin-top:18px}
+.panel-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:0 2px 14px}
+.panel-head h2{margin:0;font-size:22px;font-weight:900;color:var(--g)}
+.panel-head p{margin:0;color:var(--muted);font-size:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:860px){.grid2,.grid3{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card h3{margin:0 0 12px;font-size:16px;font-weight:700}
+.card h3 small{font-weight:400;color:var(--muted);font-size:12.5px;margin-left:6px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+.fields .full{grid-column:1/-1}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted);font-weight:500;min-width:0}
+input[type=text],input[type=number],input[type=date],select,textarea{font-family:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;min-width:0}
+textarea{min-height:90px;resize:vertical}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums}
+th,td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:middle}
+th{font-size:12px;color:var(--muted);font-weight:700;white-space:nowrap}
+td input,td select{padding:6px 8px;font-size:13px}
+.chk{display:flex;flex-direction:column;gap:6px}
+.chk label{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);font-size:14px;cursor:pointer}
+.chk input{margin-top:4px;accent-color:var(--g)}
+.chk em{font-style:normal;color:var(--muted);font-size:12px;margin-left:auto;white-space:nowrap}
+.fact{border-left:4px solid var(--g);padding:10px 14px;background:var(--gs);border-radius:0 10px 10px 0}
+.fact strong{display:block;font-size:15px}
+.fact p{margin:4px 0 0;font-size:13.5px}
+.fact .src{display:block;margin-top:6px;font-size:12px;color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:10px}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700;border:1px solid currentColor}
+.p-good{color:var(--good)} .p-warn{color:var(--warn)} .p-bad{color:var(--bad)} .p-none{color:var(--muted)}
+.big{font-size:30px;font-weight:900;color:var(--g);font-variant-numeric:tabular-nums}
+.note{font-size:12.5px;color:var(--muted);margin:10px 2px 0}
+.fit{display:flex;flex-direction:column;gap:6px}
+.fit .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.fit .why{font-size:13px;color:var(--muted)}
+.slot{border:1px dashed var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.slot .lab{font-size:12px;font-weight:700}
+.road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:860px){.road{grid-template-columns:minmax(0,1fr)}}
+.road .card h3{color:var(--g);font-size:14px;margin-bottom:6px}
+.road ul{margin:0;padding-left:18px;font-size:13.5px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;z-index:20}
+.modal{position:fixed;inset:0;background:rgba(10,14,30,.55);display:flex;align-items:center;justify-content:center;z-index:30;padding:16px}
+.modal .card{max-width:640px;width:100%}
+footer{text-align:center;font-size:12px;color:var(--muted);padding-bottom:24px}
+.student-only{display:none} body.student .student-only{display:block}
+body.student .teacher-only{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>
+body{margin:0}
+.screen[hidden]{display:none!important}
+.login{max-width:420px;margin:40px auto 0}
+.login .card{padding:24px}
+.role{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:16px}
+.role button{background:transparent;color:var(--ink);font-weight:700;border:0}
+.role button[aria-pressed="true"]{background:var(--c1);color:#fff}
+.stack-f{display:flex;flex-direction:column;gap:12px}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.bar .left{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar h2{margin:0;font-size:20px;font-weight:900}
+.who{font-size:13px;opacity:.9}
+.stu-nav{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px}
+.stu-nav button{background:transparent;color:var(--ink);border:0;font-weight:700}
+.stu-nav button[aria-selected="true"]{background:var(--c1);color:#fff}
+.list td,.list th{padding:9px 8px}
+.list tr.row:hover td{background:var(--c1-soft)}
+.res-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.res-grid{grid-template-columns:minmax(0,1fr)}}
+.res-grid .full{grid-column:1/-1}
+.pre{white-space:pre-wrap;font-size:14px;margin:0}
+.loading{position:fixed;inset:0;background:rgba(10,14,30,.25);display:flex;align-items:center;justify-content:center;z-index:40}
+.loading div{background:var(--surface);color:var(--ink);padding:14px 20px;border-radius:12px;font-weight:700;border:1px solid var(--line)}
+.btn-ok{background:var(--good);color:#fff}
+.btn-danger{background:transparent;color:var(--bad);border-color:var(--bad)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+@media print{
+  header.top .actions,.bar .no-print,nav.tabs,.legend,.stu-nav,.toast,.modal,.loading{display:none!important}
+  section.panel{display:block!important;break-inside:avoid-page}
+  body{background:#fff;color:#000}
+  header.top{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <small>더콘텐츠스쿨 · 밀리언 학습·진로 컨설팅</small>
+      <h1>고2 수시 상담 프로그램</h1>
+      <p>2028학년도 대입 첫 적용 학년 맞춤 상담</p>
+    </div>
+    <div class="actions">
+      <span class="who" id="whoami">학생 화면</span>
+      <button class="btn-ghost" id="btnTeacher" type="button">선생님 화면</button>
+      <button class="btn-ghost" id="btnStudentView" type="button" hidden>학생 화면으로</button>
+    </div>
+  </div>
+</header>
+
+<main><div class="wrap">
+
+  <!-- 작업 화면 (선생님 상담 / 학생 작성) -->
+  <div class="screen" id="scrWork">
+    <div class="bar" id="tBar">
+      <div class="left"><h2 id="workTitle"></h2><span id="pubPill"></span><span class="note" style="margin:0" id="tStatus"></span></div>
+      <div class="left no-print">
+        <button class="btn-light" id="btnSave" type="button">저장</button>
+        <button class="btn-ok" id="btnPublish" type="button">저장 + 학생에게 결과 공개</button>
+        <button class="btn-danger" id="btnUnpublish" type="button">공개 취소</button>
+        <button class="btn-light" id="btnReport" type="button">리포트 복사</button>
+        <button class="btn-light" id="btnPrint" type="button">인쇄·PDF</button>
+      </div>
+    </div>
+    <div class="bar" id="sBar">
+      <div class="left"><h2 id="sTitle"></h2></div>
+      <div class="left"><span class="note" style="margin:0" id="sStatus"></span><button class="btn-solid" id="btnSubmit" type="button">저장하기</button></div>
+    </div>
+    <div class="stu-nav" id="stuNav" role="tablist">
+      <button type="button" role="tab" id="snForm" aria-selected="true">기초조사서 작성</button>
+      <button type="button" role="tab" id="snResult" aria-selected="false">상담 결과</button>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist" aria-label="상담 10단계"></nav>
+    <div class="legend" id="legend"><span><i style="background:var(--c1)"></i>진단</span><span><i style="background:var(--c2)"></i>분석</span><span><i style="background:var(--c3)"></i>전략</span><span><i style="background:var(--c4)"></i>마무리</span></div>
+
+  <!-- 01 -->
+  <section class="panel g1" data-p="1">
+    <div class="panel-head"><h2>01 기초조사서 · 성적 · 희망</h2><p>상담의 출발점은 학생의 성적과 희망 조건입니다.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>학생 정보 <small>이름은 이니셜로 적어도 됩니다</small></h3>
+        <div class="fields">
+          <label class="f">이름(또는 이니셜)<input type="text" id="s_name" data-k></label>
+          <label class="f">학교<input type="text" id="s_school" data-k placeholder="예: 정신여자고등학교"></label>
+          <label class="f">학년<select id="s_grade" data-k><option>고2</option><option>고1</option></select></label>
+          <label class="f">상담일<input type="date" id="s_date" data-k></label>
+          <label class="f">희망 계열<select id="s_track" data-k><option value="">선택</option><option>인문</option><option>사회</option><option>상경</option><option>자연</option><option>공학</option><option>의약·보건</option><option>교육</option><option>예체능</option><option>아직 미정</option></select></label>
+          <label class="f">희망 학과(1~3지망)<input type="text" id="s_major" data-k placeholder="예: 간호, 경영, 컴퓨터공학"></label>
+          <label class="f full">희망 진로·직업과 그 이유<textarea id="s_career" data-k placeholder="왜 그 진로가 궁금한지 자유롭게"></textarea></label>
+        </div>
+      </div>
+      <div class="card"><h3>희망과 성향</h3>
+        <div class="fields">
+          <label class="f">가장 자신 있는 과목<input type="text" id="s_strong" data-k></label>
+          <label class="f">가장 부담되는 과목<input type="text" id="s_weak" data-k></label>
+          <label class="f">논술 준비 의향<select id="s_essay" data-k><option value="">선택</option><option>적극적</option><option>고려 중</option><option>원하지 않음</option></select></label>
+          <label class="f">면접 부담<select id="s_interview" data-k><option value="">선택</option><option>괜찮음</option><option>보통</option><option>매우 부담</option></select></label>
+          <label class="f">지역 선호<select id="s_region" data-k><option value="">선택</option><option>서울만</option><option>수도권까지</option><option>지역 무관</option></select></label>
+          <label class="f">재수 가능 여부<select id="s_retry" data-k><option value="">선택</option><option>어려움</option><option>고려 가능</option></select></label>
+          <label class="f full">희망하지 않는 대학·학과 유형<input type="text" id="s_no" data-k placeholder="예: 기숙사 없는 지방캠퍼스, 계약학과"></label>
+          <label class="f full">학부모 의견(학부모 작성)<textarea id="s_parent" data-k placeholder="자녀에게 기대하는 점, 걱정되는 점"></textarea></label>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3>선택과목 <small>쉼표로 구분해 적어주세요</small></h3>
+      <div class="fields">
+        <label class="f full">고2 때 듣는 선택과목<textarea id="s_sub2" data-k placeholder="예: 대수, 영어Ⅰ, 생명과학, 화학, 사회와 문화"></textarea></label>
+        <label class="f full">고3 때 신청했거나 들을 예정인 과목<textarea id="s_sub3" data-k placeholder="예: 미적분Ⅰ, 확률과 통계, 세포와 물질대사 / 아직 모르면 '미정'"></textarea></label>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3>내신 성적 <small>5등급 상대평가 등급 기준 · 과목 평균은 대략 적어도 됩니다</small></h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>학기</th><th>국어</th><th>수학</th><th>영어</th><th>사회</th><th>과학</th><th>전 과목 평균</th></tr></thead>
+        <tbody id="gradeBody"></tbody>
+      </table></div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3>모의고사(학력평가) <small>수능은 9등급 체제 유지 · 최근 성적 위주</small></h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>시행</th><th>국어</th><th>수학</th><th>영어</th><th>탐구1</th><th>탐구2</th><th>한국사</th></tr></thead>
+        <tbody id="mockBody"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="panel g1" data-p="2">
+    <div class="panel-head"><h2>02 2028 수시 지원 환경</h2><p>현 고2는 바뀐 제도의 첫 학년입니다. 선배 결과를 그대로 대입하지 않는 이유를 먼저 짚습니다.</p></div>
+    <div class="grid2">
+      <div class="stack">
+        <div class="fact"><strong>2028 대입개편 첫 적용 학년</strong><p>선배들의 합격 사례를 그대로 적용하기보다 내게 적용되는 제도·전형 변화를 먼저 확인해야 합니다.</p><span class="src">출처: 경북매일 2026.9.21 · 대교협 2028학년도 대학입학전형시행계획(2026.4.30)</span></div>
+        <div class="fact"><strong>내신 5등급제 + 성취도(A~E) 병기</strong><p>1등급이 상위 4%에서 10%로 넓어졌습니다. 1등급 학생이 늘어 등급만으로는 차이가 덜 드러납니다.</p><span class="src">출처: 교육부 2028 대학입시제도 개편 확정안(2023.12.27) · 뉴시스 2025.1.2</span></div>
+        <div class="fact"><strong>융합선택 사회·과학 9과목은 석차등급 미기재</strong><p>이 과목들은 성취도만 남으므로 세특 내용이 평가의 중심이 됩니다.</p><span class="src">출처: 교육부 확정안 · 내일교육 「미리 살펴보는 고입 가이드」</span></div>
+        <div class="fact"><strong>수능은 선택과목 없는 통합형</strong><p>국어·수학·탐구 모두 공통 응시, 탐구는 통합사회·통합과학. 수능 등급은 9등급 그대로입니다.</p><span class="src">출처: 교육부 확정안(2023.12.27) · 경향신문 2023.10.10</span></div>
+      </div>
+      <div class="stack">
+        <div class="fact"><strong>수시 모집 비율 80.8%</strong><p>전체 모집인원은 늘고 정시는 줄었습니다. 최상위권 대학은 정시 감소 폭이 커 내신 부담이 커질 전망입니다.</p><span class="src">출처: 대교협 시행계획 발표(2026.4.30) · 파이낸셜뉴스 · 헤럴드경제 2026.4.29</span></div>
+        <div class="fact"><strong>수도권 학종·논술 확대</strong><p>5등급제 전환 영향으로 수도권 대학들이 학생부종합·논술전형 비중을 높였습니다.</p><span class="src">출처: 주간경향 2026.5.7(진학사 분석)</span></div>
+        <div class="fact"><strong>수능최저 요구 대학 증가</strong><p>모의고사 성적이 좋은 학생에게는 기회가 됩니다. 송파·강동 진학교사들의 공통 조언입니다.</p><span class="src">출처: 내일교육 송파·강동판 2026.7.1</span></div>
+        <div class="fact"><strong>하반기 모의평가가 8월로 당겨짐</strong><p>2027년부터 하반기 모평이 8월 넷째·다섯째 주에 시행되어 수시 원서 전에 성적을 확인할 수 있습니다.</p><span class="src">출처: 한국교육신문 2025.9.12(교육부 발표 인용)</span></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3>이 학생에게 주는 의미 <small>상담자 메모</small></h3>
+      <textarea id="env_memo" data-k placeholder="예: 내신 1등급대가 늘어나므로 세특의 깊이로 차별화. 모의고사 2등급 안정이면 최저 있는 교과전형 기회."></textarea>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="panel g1" data-p="3">
+    <div class="panel-head"><h2>03 우리 학교 분석</h2><p>같은 등급도 학교 규모에 따라 무게가 다릅니다. 과목별 수강 인원으로 등급 커트를 계산합니다.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>학교 기본 정보</h3>
+        <div class="fields">
+          <label class="f">학교<input type="text" id="sc_name" data-k value="정신여자고등학교"></label>
+          <label class="f">유형<input type="text" id="sc_type" data-k value="서울 송파구 · 사립 일반고 · 여고"></label>
+          <label class="f">2학년 학생 수<input type="number" id="sc_n2" data-k min="0"></label>
+          <label class="f">2학년 학급 수<input type="number" id="sc_cls" data-k min="0"></label>
+          <label class="f full">고3 개설 과목 중 희망학과 관련 과목<textarea id="sc_courses" data-k placeholder="학교 교육과정 편성표에서 확인해 적어주세요"></textarea></label>
+        </div>
+        <p class="note">학생 수·개설 과목은 학교알리미(schoolinfo.go.kr) 공시자료나 학교 교육과정 편성표로 확인해 입력하세요.</p>
+      </div>
+      <div class="card"><h3>과목 등급 커트 계산기 <small>5등급 누적 비율 기준</small></h3>
+        <label class="f">과목 수강 인원<input type="number" id="calc_n" data-k min="0" placeholder="예: 210"></label>
+        <div class="tbl-wrap" style="margin-top:10px"><table>
+          <thead><tr><th>등급</th><th>누적 비율</th><th>석차 커트(이내)</th></tr></thead>
+          <tbody id="cutBody"></tbody>
+        </table></div>
+        <p class="note">누적 비율 1등급 10% · 2등급 34% · 3등급 66% · 4등급 90% · 5등급 100% (교육부 2028 대입개편 확정안). 동점자 처리와 반올림은 학교 학업성적관리규정을 따르므로 실제 커트와 1~2명 차이가 날 수 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="panel g2" data-p="4">
+    <div class="panel-head"><h2>04 학생 요약 · 전형 적합도</h2><p>입력한 성적과 점검 결과로 네 가지 전형의 신호를 봅니다. 공식 판정이 아니라 상담 대화의 출발점입니다.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>성적 요약</h3>
+        <div class="grid3">
+          <div><div class="note" style="margin:0">내신 평균</div><div class="big" id="sumGpa">–</div></div>
+          <div><div class="note" style="margin:0">학기 추세</div><div class="big" id="sumTrend" style="font-size:20px">–</div></div>
+          <div><div class="note" style="margin:0">모의 평균(국수영탐)</div><div class="big" id="sumMock">–</div></div>
+        </div>
+        <label class="f" style="margin-top:14px">학생 한 줄 요약<textarea id="sum_line" data-k placeholder="예: 생명과학 세특이 꾸준하고 수학 추세가 상승 중인 보건계열 지망생"></textarea></label>
+      </div>
+      <div class="card"><h3>전형별 신호 <small>상담자 참고 기준</small></h3>
+        <div class="stack" id="fitList"></div>
+        <p class="note">기준: 교과(내신 평균), 학종(06 학생부 점검 체크 수), 논술(논술 의향 + 모의 평균), 수능최저(모의 평균). 기준값은 상담 편의를 위해 정한 것으로 대학별 실제 기준이 아닙니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="panel g2" data-p="5">
+    <div class="panel-head"><h2>05 선택과목 점검 (고2 이수 + 고3 계획)</h2><p>고교학점제에서는 고2 때 들은 과목과 고3에 들을 과목이 함께 전공 적합성의 근거가 됩니다.</p></div>
+    <div class="card">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>과목명</th><th>이수 학기</th><th>희망학과와의 관계</th><th>현재 상태</th><th>메모</th></tr></thead>
+        <tbody id="subjBody"></tbody>
+      </table></div>
+      <p class="note">학생이 기초조사서에 적은 선택과목: <b>고2</b> <span id="echo2">–</span> · <b>고3</b> <span id="echo3">–</span></p>
+      <p class="note">희망 대학이 공개한 전공별 권장과목 안내(대학 입학처, 어디가 adiga.kr)를 확인해 "핵심" 과목을 표시하세요. 고2에 이미 이수한 핵심 과목은 세특 내용까지 함께 확인하고, 빠진 핵심 과목은 고3 신청이나 공동교육과정으로 보완할 수 있는지 봅니다.</p>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="panel g2" data-p="6">
+    <div class="panel-head"><h2>06 학생부 점검</h2><p>학종 경쟁력은 기록의 연결성에서 나옵니다. 지금까지의 기록을 함께 짚어봅니다.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>기록 점검 체크리스트</h3>
+        <div class="chk" id="recChk"></div>
+      </div>
+      <div class="card"><h3>남은 기간 보완 계획</h3>
+        <div class="fields">
+          <label class="f full">가장 강한 탐구 주제(지금까지)<textarea id="rec_best" data-k></textarea></label>
+          <label class="f full">고3 1학기에 이어갈 탐구 주제<textarea id="rec_next" data-k placeholder="2학년 탐구에서 생긴 질문을 3학년 과목으로 연결"></textarea></label>
+          <label class="f full">독서 계획<textarea id="rec_book" data-k></textarea></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="panel g3" data-p="7">
+    <div class="panel-head"><h2>07 목표 대학 후보</h2><p>후보를 넓게 모은 뒤 09단계에서 6장으로 좁힙니다.</p></div>
+    <div class="card">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>#</th><th>대학</th><th>학과</th><th>전형</th><th>수능최저</th><th>참고 입결(선배, 9등급)</th><th>잠정 판단</th><th>메모</th></tr></thead>
+        <tbody id="candBody"></tbody>
+      </table></div>
+      <p class="note">참고 입결은 대입정보포털 어디가(adiga.kr)와 각 대학 입학처 공개 자료로 확인해 적습니다. 선배 입결은 9등급제 기준이라 5등급 내신과 숫자를 그대로 비교할 수 없습니다. 2028 모집요강은 2027년 5월 무렵 확정되므로 그때 다시 확인합니다.</p>
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="panel g3" data-p="8">
+    <div class="panel-head"><h2>08 위험 체크</h2><p>지금 해당하는 항목을 체크합니다. 점수가 높을수록 고3 1학기에 집중 관리할 부분이 많습니다.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>위험 요인</h3><div class="chk" id="riskChk"></div></div>
+      <div class="card"><h3>점검 결과</h3>
+        <div class="big" id="riskScore">0점</div>
+        <p id="riskText" style="margin:6px 0 12px"></p>
+        <label class="f">상담 메모: 위험 요인별 대응<textarea id="risk_memo" data-k placeholder="예: 수능최저 불안정 → 최저 없는 학종 2장 확보"></textarea></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="panel g3" data-p="9">
+    <div class="panel-head"><h2>09 잠정 수시 6장</h2><p>지금 성적 기준의 1차 조합입니다. 고3 1학기 성적과 6월·8월 모평 후 다시 조정합니다.</p></div>
+    <div class="grid3" id="slots"></div>
+    <p class="note">후보 목록은 07단계에서 입력한 대학·학과에서 불러옵니다. 한 전형·한 라인에 몰리지 않도록 상향 2 · 적정 2 · 안정 2를 기본으로 합니다.</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="panel g4" data-p="10">
+    <div class="panel-head"><h2>10 상담 요약 · 로드맵 · 후속 일정</h2><p>오늘 정한 것과 다음에 확인할 것을 남깁니다.</p></div>
+    <div class="grid2">
+      <div class="card"><h3>상담 요약</h3>
+        <label class="f">오늘 합의한 방향<textarea id="fin_sum" data-k style="min-height:130px"></textarea></label>
+        <label class="f" style="margin-top:10px">학생이 할 일 3가지<textarea id="fin_todo" data-k placeholder="1. &#10;2. &#10;3. "></textarea></label>
+      </div>
+      <div class="card"><h3>후속 점검 일정</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>회차</th><th>날짜</th><th>확인할 것</th></tr></thead>
+          <tbody id="followBody"></tbody>
+        </table></div>
+      </div>
+    </div>
+    <h3 style="margin:22px 2px 10px;font-size:16px">고2 겨울방학 → 고3 수시 원서까지</h3>
+    <div class="road">
+      <div class="card"><h3>고2 겨울방학 (12~2월)</h3><ul><li>고2 성적 최종 정리, 후보 대학 1차 확정</li><li>고3 선택과목 최종 점검</li><li>약한 과목 개념 보완, 탐구 주제 정하기</li></ul></div>
+      <div class="card"><h3>고3 1학기 (3~7월)</h3><ul><li>3월 학평으로 수능최저 가능성 점검</li><li>중간·기말: 마지막 내신이므로 끝까지 관리</li><li>6월 모평 후 6장 조합 2차 조정</li></ul></div>
+      <div class="card"><h3>여름 ~ 원서 (7~9월)</h3><ul><li>학생부 마감 전 기록 최종 확인</li><li>8월 하반기 모평 결과로 최저 전형 확정</li><li>9월 수시 원서 접수 (일정은 대교협 발표로 확인)</li></ul></div>
+    </div>
+  </section>
+
+
+    <section class="panel g1" id="resultPanel" hidden>
+      <div class="panel-head"><h2>상담 결과</h2><p>선생님이 정리한 상담 내용입니다.</p></div>
+      <div id="resultBody"></div>
+    </section>
+  </div>
+</div></main>
+
+<footer>©더콘텐츠스쿨</footer>
+
+<div class="modal" id="copyModal" hidden>
+  <div class="card"><h3 id="copyTitle">복사할 내용</h3>
+    <p class="note" style="margin-top:0">자동 복사가 되지 않으면 아래 내용을 길게 눌러 전체 선택 후 복사하세요.</p>
+    <textarea id="copyText" style="min-height:220px" readonly></textarea>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px"><button class="btn-light" id="copyClose" type="button">닫기</button></div>
+  </div>
+</div>
+<div class="modal" id="pinModal" hidden>
+  <div class="card" style="max-width:380px"><h3>선생님 화면</h3>
+    <form class="stack-f" id="pinForm">
+      <label class="f">선생님 비밀번호<input type="password" id="pinPw" autocomplete="current-password"></label>
+      <p class="err" id="pinErr"></p>
+      <div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn-light" type="button" id="pinCancel">닫기</button><button class="btn-solid" type="submit">열기</button></div>
+    </form>
+  </div>
+</div>
+<div class="loading" id="loading" hidden><div>잠시만요…</div></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const TABS=[[1,'기초조사서·성적·희망','g1'],[2,'2028 수시 지원 환경','g1'],[3,'우리 학교 분석','g1'],[4,'학생 요약·전형 적합도','g2'],[5,'선택과목 점검(고2·고3)','g2'],[6,'학생부 점검','g2'],[7,'목표 대학 후보','g3'],[8,'위험 체크','g3'],[9,'잠정 수시 6장','g3'],[10,'상담 요약·로드맵','g4']];
+const SEMS=['1-1','1-2','2-1','2-2'], SUBJ=['kor','math','eng','soc','sci','avg'];
+const MOCKS=['고2 3월','고2 6월','고2 9월','고2 11월'], MSUB=['kor','math','eng','t1','t2','his'];
+const REC=['세특에 희망 진로와 연결된 탐구가 2개 이상 있다','탐구가 학년을 거치며 심화되고 있다(같은 질문의 발전)','진로 관련 독서가 기록되어 있고 탐구로 이어졌다','창체 동아리 활동이 희망 계열과 연결된다','자율·봉사에서 협업·리더십 사례가 드러난다','행동특성 및 종합의견에 학업 태도가 구체적으로 적혀 있다','성취도만 기재되는 과목(융합선택 등)에서도 세특이 충실하다','고2 2학기 활동이 1학기보다 깊어졌다'];
+const RISK=[['고2 2학기 내신이 1학기보다 떨어졌다',2],['희망 계열이 아직 정해지지 않았거나 최근 바뀌었다',2],['고2·고3 선택과목에 희망학과 핵심 권장과목이 빠져 있다',3],['미이수 위험이 있는 과목이 있다(출석·성취율)',2],['수능최저 전형을 원하지만 모의고사 등급이 들쭉날쭉하다',2],['세특에 진로 관련 탐구가 1개 이하다',2],['후보 대학이 한 전형·한 라인에 몰려 있다',2],['고3 1학기 학습 계획이 아직 없다',1]];
+const CUM=[10,34,66,90,100];
+const SLOTL=['상향 ①','상향 ②','적정 ①','적정 ②','안정 ①','안정 ②'];
+const FOL=['1차','2차','3차','4차'];
+
+/* ---------- build form ---------- */
+$('#tabs').innerHTML=TABS.map(([n,t,g])=>`<button class="tab ${g}" role="tab" data-t="${n}" aria-selected="false" type="button"><b>${String(n).padStart(2,'0')}</b><span>${t}</span></button>`).join('');
+$('#gradeBody').innerHTML=SEMS.map(s=>`<tr><th>${s.replace('-','학년 ')}학기</th>${SUBJ.map(k=>`<td><input type="number" step="0.01" min="1" max="5" id="g_${s}_${k}" data-k aria-label="${s} ${k}"></td>`).join('')}</tr>`).join('');
+$('#mockBody').innerHTML=MOCKS.map((m,i)=>`<tr><th>${m}</th>${MSUB.map(k=>`<td><input type="number" min="1" max="9" id="m_${i}_${k}" data-k aria-label="${m} ${k}"></td>`).join('')}</tr>`).join('');
+$('#subjBody').innerHTML=Array.from({length:12},(_,i)=>`<tr><td><input type="text" id="sb_${i}_n" data-k aria-label="과목명"></td><td><select id="sb_${i}_t" data-k><option value="">–</option><option>2-1</option><option>2-2</option><option>2-1·2-2</option><option>3-1</option><option>3-2</option><option>3-1·3-2</option></select></td><td><select id="sb_${i}_r" data-k><option value="">–</option><option>핵심</option><option>권장</option><option>관련 적음</option></select></td><td><select id="sb_${i}_s" data-k><option value="">–</option><option>이수 완료</option><option>수강 중</option><option>수강 확정</option><option>신청 예정</option><option>학교 미개설</option><option>공동교육과정 검토</option></select></td><td><input type="text" id="sb_${i}_m" data-k aria-label="메모"></td></tr>`).join('');
+$('#recChk').innerHTML=REC.map((t,i)=>`<label><input type="checkbox" id="rc_${i}" data-k><span>${t}</span></label>`).join('');
+$('#riskChk').innerHTML=RISK.map(([t,p],i)=>`<label><input type="checkbox" id="rk_${i}" data-k><span>${t}</span><em>${p}점</em></label>`).join('');
+const JUDGE='<option value="">–</option><option>상향</option><option>적정</option><option>안정</option><option>보류</option>';
+$('#candBody').innerHTML=Array.from({length:10},(_,i)=>`<tr><td>${i+1}</td><td><input type="text" id="cd_${i}_u" data-k aria-label="대학"></td><td><input type="text" id="cd_${i}_d" data-k aria-label="학과"></td><td><select id="cd_${i}_t" data-k><option value="">–</option><option>학생부교과</option><option>학생부종합</option><option>논술</option><option>지역균형(추천)</option><option>기타</option></select></td><td><select id="cd_${i}_c" data-k><option value="">–</option><option>있음</option><option>없음</option></select></td><td><input type="text" id="cd_${i}_r" data-k aria-label="참고 입결" placeholder="예: 70%컷 2.3"></td><td><select id="cd_${i}_j" data-k>${JUDGE}</select></td><td><input type="text" id="cd_${i}_m" data-k aria-label="메모"></td></tr>`).join('');
+$('#slots').innerHTML=SLOTL.map((l,i)=>`<div class="slot"><span class="lab" style="color:${i<2?'var(--c3)':i<4?'var(--c2)':'var(--good)'}">${l}</span><select id="sl_${i}" data-k aria-label="${l}"><option value="">후보에서 선택</option></select><input type="text" id="sl_${i}_m" data-k placeholder="선택 이유" aria-label="${l} 이유"></div>`).join('');
+$('#followBody').innerHTML=FOL.map((f,i)=>`<tr><th>${f}</th><td><input type="date" id="fu_${i}_d" data-k aria-label="${f} 날짜"></td><td><input type="text" id="fu_${i}_m" data-k aria-label="${f} 확인할 것" placeholder="${['겨울방학 계획 점검','3월 학평 후 최저 점검','6월 모평 후 6장 조정','8월 모평 후 원서 확정'][i]}"></td></tr>`).join('');
+
+/* ---------- form state ---------- */
+const P1=new Set($$('section[data-p="1"] [data-k]').map(e=>e.id));
+const DEF={};$$('[data-k]').forEach(el=>{DEF[el.id]=el.type==='checkbox'?false:el.value});
+function collect(inP1){const o={};$$('[data-k]').forEach(el=>{if(P1.has(el.id)!==inP1)return;o[el.id]=el.type==='checkbox'?el.checked:el.value});return o}
+function apply(o){if(!o)return;$$('[data-k]').forEach(el=>{if(!(el.id in o))return;if(el.type==='checkbox')el.checked=!!o[el.id];else el.value=o[el.id]})}
+function resetForm(){apply(DEF);$$('#slots select').forEach(s=>s.innerHTML='<option value="">후보에서 선택</option>')}
+function applySlots(o){$$('#slots select').forEach(sel=>{const v=o&&o[sel.id];if(v&&![...sel.options].some(op=>op.value===v)){const op=document.createElement('option');op.textContent=v;sel.appendChild(op)}if(v!==undefined)sel.value=v})}
+
+const num=v=>{const n=parseFloat(v);return isNaN(n)?null:n};
+const avgOf=a=>{a=a.filter(x=>x!==null);return a.length?a.reduce((s,x)=>s+x,0)/a.length:null};
+const semAvg=s=>{const v=num($(`#g_${s}_avg`).value);return v!==null?v:avgOf(['kor','math','eng','soc','sci'].map(k=>num($(`#g_${s}_${k}`).value)))};
+
+function render(){
+  $('#echo2').textContent=$('#s_sub2').value.trim()||'–';$('#echo3').textContent=$('#s_sub3').value.trim()||'–';
+  const n=num($('#calc_n').value);
+  $('#cutBody').innerHTML=CUM.map((c,i)=>`<tr><td>${i+1}등급</td><td>${c}%</td><td>${n?Math.round(n*c/100)+'등 이내':'–'}</td></tr>`).join('');
+  const sems=SEMS.map(semAvg),gpa=avgOf(sems);
+  $('#sumGpa').textContent=gpa?gpa.toFixed(2):'–';
+  const filled=sems.map((v,i)=>[v,i]).filter(x=>x[0]!==null);let trend='–';
+  if(filled.length>=2){const d=filled[filled.length-1][0]-filled[filled.length-2][0];trend=d<=-0.1?'상승 ↑':d>=0.1?'하락 ↓':'유지 →'}
+  $('#sumTrend').textContent=trend;
+  let mockAvg=null;for(let i=MOCKS.length-1;i>=0;i--){const a=avgOf(['kor','math','eng','t1'].map(k=>num($(`#m_${i}_${k}`).value)));if(a!==null){mockAvg=a;break}}
+  $('#sumMock').textContent=mockAvg?mockAvg.toFixed(1):'–';
+  const rc=REC.filter((_,i)=>$('#rc_'+i).checked).length,essay=$('#s_essay').value;
+  FITS=[
+    ['학생부교과',gpa===null?['p-none','입력 필요','내신 평균을 입력하면 표시됩니다.']:gpa<=1.5?['p-good','강점','내신 평균 '+gpa.toFixed(2)+' · 교과전형을 주력 카드로 검토']:gpa<=2.3?['p-warn','검토','최저 있는 교과전형이면 경쟁력이 생길 수 있음']:['p-bad','보완','교과 단독보다 학종·논술과 조합']],
+    ['학생부종합',rc>=6?['p-good','강점',`기록 점검 ${rc}/8 · 진로 연결이 잘 드러남`]:rc>=3?['p-warn','검토',`기록 점검 ${rc}/8 · 고3 1학기 탐구 연결이 관건`]:['p-bad','보완',`기록 점검 ${rc}/8 · 학생부 보완 계획 필요`]],
+    ['논술',!essay?['p-none','입력 필요','논술 의향을 선택하세요.']:essay==='원하지 않음'?['p-none','제외','학생이 원하지 않음']:mockAvg!==null&&mockAvg<=2.5?['p-good','검토 가치',`모의 평균 ${mockAvg.toFixed(1)} · 최저 충족 가능성 있음`]:['p-warn','신중','최저 충족 가능성부터 점검']],
+    ['수능최저 대응',mockAvg===null?['p-none','입력 필요','모의고사 성적을 입력하세요.']:mockAvg<=2.5?['p-good','유리',`모의 평균 ${mockAvg.toFixed(1)} · 최저 있는 전형이 기회`]:mockAvg<=3.5?['p-warn','가능','과목 조합에 따라 2합5~3합7 수준 점검']:['p-bad','부담','최저 없는 전형 위주로 구성']]
+  ];
+  $('#fitList').innerHTML=FITS.map(([nm,[c,t,w]])=>`<div class="fit"><div class="row"><strong>${nm}</strong><span class="pill ${c}">${t}</span></div><div class="why">${esc(w)}</div></div>`).join('<hr style="border:0;border-top:1px solid var(--line);margin:4px 0">');
+  const score=RISK.reduce((s,[,p],i)=>s+($('#rk_'+i).checked?p:0),0);
+  RISKLV=score<=3?['p-good','낮음','현재 계획대로 진행하며 학기별로 확인합니다.']:score<=7?['p-warn','관리 필요','체크한 항목마다 대응을 정하고, 6장 중 안정 카드를 늘립니다.']:['p-bad','집중 관리','고3 1학기 계획을 먼저 세우고, 진로·과목 선택부터 정리합니다.'];
+  $('#riskScore').textContent=score+'점';
+  $('#riskText').innerHTML=`<span class="pill ${RISKLV[0]}">${RISKLV[1]}</span> ${RISKLV[2]}`;
+  const cands=Array.from({length:10},(_,i)=>{const u=$(`#cd_${i}_u`).value.trim(),d=$(`#cd_${i}_d`).value.trim(),t=$(`#cd_${i}_t`).value;return u?`${u} ${d}${t?' ('+t+')':''}`:null}).filter(Boolean);
+  $$('#slots select').forEach(sel=>{const cur=sel.value;sel.innerHTML='<option value="">후보에서 선택</option>'+cands.map(c=>`<option>${esc(c)}</option>`).join('')+(cur&&!cands.includes(cur)?`<option>${esc(cur)}</option>`:'');sel.value=cur});
+}
+let FITS=[],RISKLV=['p-none','',''];
+
+/* ---------- ui helpers ---------- */
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(t._h);t._h=setTimeout(()=>t.hidden=true,2600)}
+function busy(on){$('#loading').hidden=!on}
+function copyOut(title,text){const fb=()=>{$('#copyTitle').textContent=title;$('#copyText').value=text;$('#copyModal').hidden=false;$('#copyText').select()};
+  try{navigator.clipboard.writeText(text).then(()=>toast(title+' 복사됨'),fb)}catch(e){fb()}}
+$('#copyClose').onclick=()=>$('#copyModal').hidden=true;
+const API_URL='https://script.google.com/macros/s/AKfycbzUssKxVJfm6evlHRqHaVVdwFsDWchYfuQsoAtCU6uKs8DdadcaSSRdZZNQmJY_F0uqjg/exec';
+function gsr(fn,args){return new Promise((res,rej)=>{if(!(window.google&&google.script&&google.script.run)){rej(new Error('연결할 수 없습니다.'));return}
+  google.script.run.withSuccessHandler(res).withFailureHandler(e=>rej(e instanceof Error?e:new Error(String(e))))[fn](...args)})}
+async function run(fn,...args){
+  try{const r=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn,args}),credentials:'omit'});
+    if(!r.ok)throw new Error('HTTP '+r.status);return await r.json();}
+  catch(e){return gsr(fn,args)}
+}
+function screen(id){['#scrLogin','#scrList','#scrWork'].forEach(s=>$(s).hidden=s!==id);window.scrollTo(0,0)}
+let current=1;
+function show(n){current=n;$$('section.panel[data-p]').forEach(p=>p.hidden=+p.dataset.p!==n);$$('.tab').forEach(t=>t.setAttribute('aria-selected',+t.dataset.t===n));$('#resultPanel').hidden=true}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(b){show(+b.dataset.t);window.scrollTo(0,0)}});
+
+/* ---------- result view ---------- */
+function buildResult(){
+  render();const v=id=>($('#'+id)?.value||'').trim();
+  return{name:v('s_name'),school:v('s_school'),track:v('s_track'),major:v('s_major'),date:v('s_date'),
+    gpa:$('#sumGpa').textContent,trend:$('#sumTrend').textContent,mock:$('#sumMock').textContent,sum_line:v('sum_line'),
+    fits:FITS.map(([n,[c,t,w]])=>({n,c,t,w})),
+    risk:{score:$('#riskScore').textContent,c:RISKLV[0],t:RISKLV[1],w:RISKLV[2],items:RISK.filter((_,i)=>$('#rk_'+i).checked).map(r=>r[0]),memo:v('risk_memo')},
+    slots:SLOTL.map((l,i)=>({l,v:v('sl_'+i),m:v('sl_'+i+'_m')})),
+    fin_sum:v('fin_sum'),fin_todo:v('fin_todo'),
+    follow:FOL.map((f,i)=>({f,d:v(`fu_${i}_d`),m:v(`fu_${i}_m`)})).filter(x=>x.d||x.m)};
+}
+function renderResult(R){
+  const box=$('#resultBody');
+  if(!R){box.innerHTML='<div class="card"><p style="margin:0">아직 공개된 상담 결과가 없습니다. 상담이 끝나면 선생님이 이곳에 결과를 올려드립니다.</p></div>';return}
+  const road=document.querySelector('section[data-p="10"] .road').outerHTML;
+  box.innerHTML=`<div class="res-grid">
+   <div class="card"><h3>요약</h3><dl class="kv"><dt>희망</dt><dd>${esc(R.track||'-')} · ${esc(R.major||'-')}</dd><dt>내신 평균</dt><dd>${esc(R.gpa)} (추세 ${esc(R.trend)})</dd><dt>모의 평균</dt><dd>${esc(R.mock)}</dd></dl>${R.sum_line?`<p class="pre" style="margin-top:10px">${esc(R.sum_line)}</p>`:''}</div>
+   <div class="card"><h3>전형별 신호 <small>상담 참고용</small></h3><div class="stack">${R.fits.map(f=>`<div class="fit"><div class="row"><strong>${esc(f.n)}</strong><span class="pill ${esc(f.c)}">${esc(f.t)}</span></div><div class="why">${esc(f.w)}</div></div>`).join('')}</div></div>
+   <div class="card"><h3>잠정 수시 6장 <small>고3 1학기 후 다시 조정</small></h3><div class="tbl-wrap"><table><tbody>${R.slots.map(s=>`<tr><th>${esc(s.l)}</th><td>${esc(s.v||'-')}${s.m?`<div class="note" style="margin:2px 0 0">${esc(s.m)}</div>`:''}</td></tr>`).join('')}</tbody></table></div></div>
+   <div class="card"><h3>관리할 점</h3><p style="margin:0 0 8px"><span class="pill ${esc(R.risk.c)}">${esc(R.risk.t)}</span> ${esc(R.risk.w)}</p>${R.risk.items.length?`<ul style="margin:0;padding-left:18px">${R.risk.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${R.risk.memo?`<p class="pre" style="margin-top:8px">${esc(R.risk.memo)}</p>`:''}</div>
+   <div class="card"><h3>오늘 합의한 방향</h3><p class="pre">${esc(R.fin_sum||'-')}</p></div>
+   <div class="card"><h3>학생이 할 일</h3><p class="pre">${esc(R.fin_todo||'-')}</p>${R.follow.length?`<h3 style="margin-top:14px">후속 점검</h3><ul style="margin:0;padding-left:18px">${R.follow.map(x=>`<li>${esc(x.f)} ${esc(x.d)} ${esc(x.m)}</li>`).join('')}</ul>`:''}</div>
+   <div class="full"><h3 style="margin:6px 2px 10px;font-size:16px">고2 겨울방학 → 고3 수시 원서까지</h3>${road}</div>
+  </div><p class="note">2028 모집요강 확정(2027년 5월 무렵) 후 다시 확인합니다.</p>`;
+}
+
+/* ---------- 1인 전용: 학생 화면 기본, 선생님은 비밀번호로 ---------- */
+let tPw=null,curPub=false,dirty=false;
+const DRAFT='g2-solo-draft';
+
+function studentMode(){
+  tPw=null;document.body.className='student-mode';
+  $('#whoami').textContent='학생 화면';$('#btnTeacher').hidden=false;$('#btnStudentView').hidden=true;
+  $('#tBar').hidden=true;$('#sBar').hidden=false;$('#tabs').hidden=true;$('#legend').hidden=true;$('#stuNav').hidden=false;
+}
+function stuTab(t){const f=t==='form';$('#snForm').setAttribute('aria-selected',f);$('#snResult').setAttribute('aria-selected',!f);
+  $$('section.panel[data-p]').forEach(p=>p.hidden=!(f&&p.dataset.p==='1'));$('#resultPanel').hidden=f;$('#btnSubmit').hidden=!f;$('#sTitle').textContent=f?'기초조사서':'상담 결과'}
+$('#snForm').onclick=()=>stuTab('form');$('#snResult').onclick=()=>stuTab('result');
+
+async function loadStudentView(preferResult){
+  busy(true);
+  try{const r=await run('loadStudent');
+    resetForm();let data=r.data||{};
+    try{const d=localStorage.getItem(DRAFT);if(d){const dd=JSON.parse(d);if(dd._at&&(!r.savedAt||dd._at>r.savedAt)){data=dd;toast('저장하지 않은 작성 내용을 불러왔습니다. "저장하기"를 눌러주세요.')}}}catch(e){}
+    delete data._at;apply(data);render();
+    $('#sStatus').textContent=r.savedAt?'마지막 저장 '+r.savedAt:'아직 저장 전';
+    renderResult(r.result);studentMode();stuTab(preferResult&&r.result?'result':'form');dirty=false;
+  }catch(err){$('#sStatus').textContent='불러오지 못했습니다: '+err.message;studentMode();stuTab('form')}
+  finally{busy(false)}
+}
+
+$('#btnSubmit').onclick=async()=>{
+  busy(true);
+  try{const r=await run('studentSave',collect(true));
+    if(!r.ok){toast(r.msg||'저장하지 못했습니다.');return}
+    $('#sStatus').textContent='마지막 저장 '+r.savedAt;toast('저장했습니다. 다시 열어도 그대로 남아 있어요.');dirty=false;
+    try{localStorage.removeItem(DRAFT)}catch(e){}
+  }catch(err){toast('저장하지 못했습니다. 인터넷 연결을 확인하고 다시 눌러주세요.')}
+  finally{busy(false)}
+};
+
+/* ---------- 선생님 ---------- */
+$('#btnTeacher').onclick=()=>{$('#pinErr').textContent='';$('#pinPw').value='';$('#pinModal').hidden=false;$('#pinPw').focus()};
+$('#pinCancel').onclick=()=>$('#pinModal').hidden=true;
+$('#pinForm').addEventListener('submit',async e=>{e.preventDefault();const pw=$('#pinPw').value;if(!pw)return;busy(true);
+  try{const r=await run('teacherLoad',pw);if(!r.ok){$('#pinErr').textContent=r.msg;return}
+    tPw=pw;$('#pinModal').hidden=true;$('#pinPw').value='';
+    resetForm();apply(r.data);apply(r.consult);render();applySlots(r.consult);render();
+    if(!$('#s_date').value)$('#s_date').value=new Date().toISOString().slice(0,10);
+    curPub=r.published;document.body.className='teacher-mode';
+    $('#whoami').textContent='선생님 화면';$('#btnTeacher').hidden=true;$('#btnStudentView').hidden=false;
+    $('#tBar').hidden=false;$('#sBar').hidden=true;$('#tabs').hidden=false;$('#legend').hidden=false;$('#stuNav').hidden=true;
+    $('#workTitle').textContent='상담 기록';$('#tStatus').textContent=r.savedAt?'마지막 저장 '+r.savedAt:'아직 저장 전';
+    updPub();show(1);window.scrollTo(0,0);dirty=false;
+    toast(r.studentSavedAt?'학생 작성 내용 ('+r.studentSavedAt+')을 불러왔습니다':'학생이 아직 작성하지 않았습니다');
+  }catch(err){$('#pinErr').textContent='연결에 실패했습니다. '+err.message}finally{busy(false)}});
+let leaveWarned=false;
+$('#btnStudentView').onclick=()=>{if(dirty&&!leaveWarned){leaveWarned=true;toast('저장하지 않은 내용이 있어요. 한 번 더 누르면 저장하지 않고 이동합니다.');return}leaveWarned=false;loadStudentView(true)};
+
+function updPub(){$('#pubPill').innerHTML=curPub?'<span class="pill p-good">학생에게 공개 중</span>':'<span class="pill p-none">비공개</span>';$('#btnUnpublish').hidden=!curPub;$('#btnPublish').textContent=curPub?'저장 + 공개 내용 갱신':'저장 + 학생에게 결과 공개'}
+async function saveT(publish){busy(true);
+  try{const r=await run('teacherSave',tPw,collect(true),collect(false),buildResult(),publish);
+    if(!r.ok){toast(r.msg);return}curPub=r.published;updPub();dirty=false;$('#tStatus').textContent='마지막 저장 '+r.savedAt;
+    toast(publish===true?'저장하고 학생에게 공개했습니다':publish===false?'공개를 취소했습니다':'저장했습니다. 다시 열어도 그대로 남아 있어요.');
+  }catch(e){toast('저장하지 못했습니다. 다시 눌러주세요.')}finally{busy(false)}}
+$('#btnSave').onclick=()=>saveT(undefined);
+$('#btnPublish').onclick=()=>saveT(true);
+$('#btnUnpublish').onclick=()=>saveT(false);
+$('#btnPrint').onclick=()=>{render();window.print()};
+$('#btnReport').onclick=()=>{const R=buildResult(),L=[];
+  L.push('■ 고2 수시 상담 리포트 · 더콘텐츠스쿨');L.push(`학생: ${R.name||'-'} / ${R.school||'-'} / 상담일 ${R.date||'-'}`);L.push(`희망: ${R.track||'-'} · ${R.major||'-'}`);
+  L.push(`내신 평균 ${R.gpa} (추세 ${R.trend}) · 모의 평균 ${R.mock}`);L.push(`선택과목 고2: ${($('#s_sub2').value||'-').trim()} / 고3: ${($('#s_sub3').value||'-').trim()}`);if(R.sum_line)L.push('요약: '+R.sum_line);
+  L.push('\n[전형별 신호]');R.fits.forEach(f=>L.push(`- ${f.n}: ${f.t} · ${f.w}`));
+  L.push(`\n[위험 체크] ${R.risk.score} · ${R.risk.t} — ${R.risk.w}`);R.risk.items.forEach(x=>L.push('- '+x));if(R.risk.memo)L.push('대응: '+R.risk.memo);
+  L.push('\n[잠정 수시 6장]');R.slots.forEach(s=>L.push(`- ${s.l}: ${s.v||'-'}${s.m?' / '+s.m:''}`));
+  L.push('\n[오늘 합의한 방향]\n'+(R.fin_sum||'-'));L.push('\n[학생이 할 일]\n'+(R.fin_todo||'-'));
+  if(R.follow.length){L.push('\n[후속 점검]');R.follow.forEach(x=>L.push(`- ${x.f} ${x.d} ${x.m}`))}
+  copyOut('상담 리포트',L.join('\n'))};
+
+
+document.addEventListener('input',()=>{render();dirty=true;leaveWarned=false;if(!tPw){try{const o=collect(true);o._at=new Date().toISOString().slice(0,16).replace('T',' ');localStorage.setItem(DRAFT,JSON.stringify(o))}catch(e){}}});
+document.addEventListener('change',()=>{render();dirty=true});
+window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+resetForm();render();show(1);loadStudentView(true);
+
+</script>
+</body>
+</html>
